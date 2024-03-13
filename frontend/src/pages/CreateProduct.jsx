@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 const CreateProduct = () => {
   const [name, setName] = useState('');
@@ -10,7 +11,7 @@ const CreateProduct = () => {
   const [quantity, setQuantity] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSave = () => {
     const data = {
@@ -22,10 +23,11 @@ const CreateProduct = () => {
     axios.post('http://localhost:2727/products/', data)
       .then(() => {
         setLoading(false);
+        enqueueSnackbar('Product Created Successfully!', { variant: 'success' })
         navigate('/')
       }).catch((error) => {
         setLoading(false);
-        alert('ERROR: Please Check Console')
+        enqueueSnackbar('ERROR: Please Check Console', { variant: 'error' })
         console.log(error);
       })
   };
@@ -54,7 +56,7 @@ const CreateProduct = () => {
             onChange={(e) => setPrice(e.target.value)}
             className='border-2 border-gray-500 px-4 py-2  w-full'
             placeholder='0.00'
-            />
+          />
         </div>
         <div className='my-4'>
           <label className='text-xl mr-4 text-gray-500'>Quantity</label>
