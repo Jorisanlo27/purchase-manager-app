@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
 import { PORT, mongoDBURL } from "./config.js";
@@ -10,19 +11,20 @@ const app = express();
 app.use(express.json());
 
 //Middleware for handling CORS POLICY
-app.use(cors({
-    origin: "http://localhost:2727",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type"]
-}));
+app.use(cors());
+// app.use(cors({
+//     origin: "http://localhost:2727",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Content-Type"]
+// }));
 
 app.get('/', (req, res) => {
     console.log(req);
-    return res.status(234).send("Welcome to MERN");
+    return res.status(234).send("Welcome to PMA");
 });
 
 //Products Routes
-productsRoute.use("/products", productsRoute);
+app.use("/products", productsRoute);
 
 //Database Connection
 mongoose
