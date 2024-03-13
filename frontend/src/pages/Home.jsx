@@ -1,14 +1,15 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { AiOutlineEdit } from 'react-icons/ai';
-import { BsInfoCircle } from 'react-icons/bs';
-import { MdOutlineAddBox, MdOutlineDelete } from 'react-icons/md';
+import { MdOutlineAddBox } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import Spinner from '../components/Spinner';
+import ProductsCard from '../components/home/ProductsCard';
+import ProductsTable from '../components/home/ProductsTable';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showType, setShowType] = useState('table');
 
   useEffect(() => {
     setLoading(true);
@@ -27,6 +28,20 @@ const Home = () => {
 
   return (
     <div className='p-4'>
+      <div className='flex justify-center items-center gap-x-4'>
+        <button
+          className='bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg'
+          onClick={() => setShowType('table')}
+        >
+          Table
+        </button>
+        <button
+          className='bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg'
+          onClick={() => setShowType('card')}
+        >
+          Card
+        </button>
+      </div>
       <div className="flex justify-between items-center">
         <h1 className="text-3xl my-8">Products List</h1>
         <Link to={'/products/create'}>
@@ -35,56 +50,10 @@ const Home = () => {
       </div>
       {loading ? (
         <Spinner />
+      ) : showType === 'table' ? (
+        <ProductsTable products={products} />
       ) : (
-        <table className='w-full border-separate border-spacing-1'>
-          <thead>
-            <tr>
-              {['#', 'Name', 'Price', 'Quantity', 'Actions'].map((th, i) => (
-                <th key={i} className='border border-slate-600 rounded-md'>{th}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product, i) => (
-              <tr key={i} className='h-8'>
-                <td className='border border-slate-700 rounded-md text-center'>
-                  {i + 1}
-                </td>
-                <td className='border border-slate-700 rounded-md text-center'>
-                  {product.name}
-                </td>
-                <td className='border border-slate-700 rounded-md text-center'>
-                  {product.price}
-                </td>
-                <td className='border border-slate-700 rounded-md text-center'>
-                  {product.quantity}
-                </td>
-                <td className='border border-slate-700 rounded-md text-center'>
-                  <div className="flex justify-center gap-x-4">
-                    <Link to={`/products/details/${product._id}`}>
-                      <BsInfoCircle className='text-2xl text-green-800' />
-                    </Link>
-                    <Link to={`/products/edit/${product._id}`}>
-                      <AiOutlineEdit className='text-2xl text-yellow-800' />
-                    </Link>
-                    <Link to={`/products/delete/${product._id}`}>
-                      <MdOutlineDelete className='text-2xl text-red-800' />
-                    </Link>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr>
-              <th class="border bg-slate-800 text-white font-bold rounded-md text-center"></th>
-              <th class="border bg-slate-800 text-white font-bold rounded-md text-center">Total</th>
-              <td class="border bg-slate-800 text-white font-bold rounded-md text-center">?</td>
-              <td class="border bg-slate-800 text-white font-bold rounded-md text-center">?.??</td>
-              <th class="border bg-slate-800 text-white font-bold rounded-md text-center"></th>
-            </tr>
-          </tfoot>
-        </table>
+        <ProductsCard products={products} />
       )}
     </div>
   )
