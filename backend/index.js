@@ -36,3 +36,5 @@ mongoose
     }).catch(() => {
 
     });
+
+export default app;
