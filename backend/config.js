@@ -1,2 +1,0 @@
-export const PORT = 2727;
-export const mongoDBURL = "mongodb+srv://jorgersantana27:UNnBoNo74jnEpfH1@purchase-manager-app.pneoxh2.mongodb.net/products-collection?retryWrites=true&w=majority&appName=purchase-manager-app"
